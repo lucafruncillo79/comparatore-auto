@@ -3,11 +3,14 @@ package src.app;
 
 import src.modelli.Auto;
 import src.modelli.Motore;
+import src.servizi.CalcolatoreSpese;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -54,6 +57,36 @@ public class Main {
 
         } catch (IOException e) {
             System.out.println("Errore durante la lettura del file: " + e.getMessage());
+            return;
         }
+ 
+        //scanner è l'equivalente di scanf in c
+        Scanner scanner = new Scanner(System.in);
+        scanner.useLocale(java.util.Locale.US); //grazie a questa riga, il sistema non va in crash se si usa il . e non le , in input
+
+        System.out.println("\n--- BENENUTO NEL COMPARATORE AUTO ---");
+
+        System.out.print("Inserisci i chilometri che prevedi di percorrere in un anno (es. 15000): ");
+        double kmUtente = scanner.nextDouble();
+
+        System.out.print("Inserisci il prezzo attuale del carburante al litro (es. 1,85): ");
+        double prezzoUtente = scanner.nextDouble();
+
+        // Creiamo un'istanza del nostro calcolatore
+        CalcolatoreSpese calcolatore = new CalcolatoreSpese();
+
+        System.out.println("\n--- RISULTATI DELLA SPESA ANNUA ---");
+        
+        // Cicliamo tutte le auto caricate dal CSV e stampiamo il preventivo per OGNUNA di esse
+        for (Auto a : listaAuto) {
+            double spesaAnnua = calcolatore.calcolaSpesaAnnua(a, kmUtente, prezzoUtente);
+            
+            System.out.println("Auto: " + a.getMarca() + " " + a.getModello() + 
+                               " (" + a.getMotore().getSigla() + ") -> Spesa stimata: " + 
+                               String.format("%.2f", spesaAnnua) + " euro/anno");
+        }
+
+        scanner.close(); // Chiudiamo lo scanner per buona pratica
     }
+    
 }
