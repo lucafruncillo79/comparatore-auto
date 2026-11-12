@@ -49,7 +49,7 @@ public class Main {
                 // 5. Ora abbiamo tutti gli "ingredienti" pronti. Costruiamo l'oggetto Auto!
                 Auto auto = new Auto(marca, modello, motore, consumo, costoTagliando, prezzoBase);
                 
-                // 6. Salviamo l'auto finita nella nostra lista (la cassettiera principale)
+                // 6. Salviamo l'auto finita nella nostra lista.
                 listaAuto.add(auto);
             }
             
@@ -60,16 +60,16 @@ public class Main {
             return;
         }
  
-        //scanner è l'equivalente di scanf in c
+        // scanner è l'equivalente di scanf in C
         Scanner scanner = new Scanner(System.in);
-        scanner.useLocale(java.util.Locale.US); //grazie a questa riga, il sistema non va in crash se si usa il . e non le , in input
+        scanner.useLocale(java.util.Locale.US); // grazie a questa riga, il sistema non va in crash se si usa il . e non la , in input
 
-        System.out.println("\n--- BENENUTO NEL COMPARATORE AUTO ---");
+        System.out.println("\n--- BENVENUTO NEL COMPARATORE AUTO ---");
 
         System.out.print("Inserisci i chilometri che prevedi di percorrere in un anno (es. 15000): ");
         double kmUtente = scanner.nextDouble();
 
-        System.out.print("Inserisci il prezzo attuale del carburante al litro (es. 1,85): ");
+        System.out.print("Inserisci il prezzo attuale del carburante al litro (es. 1.85): ");
         double prezzoUtente = scanner.nextDouble();
 
         // Creiamo un'istanza del nostro calcolatore
@@ -79,11 +79,19 @@ public class Main {
         
         // Cicliamo tutte le auto caricate dal CSV e stampiamo il preventivo per OGNUNA di esse
         for (Auto a : listaAuto) {
+
+            // Calcoliamo il costo del solo carburante
+            double costoCarburante = calcolatore.calcolaCostoCarburante(a, kmUtente, prezzoUtente);
+
+            // Calcoliamo la spesa annuale totale (carburante + tagliando)
             double spesaAnnua = calcolatore.calcolaSpesaAnnua(a, kmUtente, prezzoUtente);
             
             System.out.println("Auto: " + a.getMarca() + " " + a.getModello() + 
-                               " (" + a.getMotore().getSigla() + ") -> Spesa stimata: " + 
-                               String.format("%.2f", spesaAnnua) + " euro/anno");
+                               " (" + a.getMotore().getSigla() + ")");
+
+            System.out.println("Costo carburante: " + String.format("%.2f", costoCarburante) + " euro/anno");
+
+            System.out.println("Spesa totale: " + String.format("%.2f", spesaAnnua) + " euro/anno");
         }
 
         scanner.close(); // Chiudiamo lo scanner per buona pratica
