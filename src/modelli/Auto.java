@@ -1,13 +1,14 @@
+package src.modelli;
 public class Auto {
 
     private final String marca;
     private final String modello;
-    private final String motore;
+    private final Motore motore;
     private final double consumoKmL;      
     private final double costoTagliando;
     private final double prezzoBase;
 
-    public Auto (String marca, String modello, String motore, double consumoKmL, double costoTagliando, double prezzoBase){
+    public Auto (String marca, String modello, Motore motore, double consumoKmL, double costoTagliando, double prezzoBase){
 
         this.marca = marca;
         this.modello = modello;
@@ -26,7 +27,7 @@ public class Auto {
         return modello;
     }
 
-    public String getMotore() {
+    public Motore getMotore() {
         return motore;
     }
 
